@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Akses Lokasi Pengguna</title>
+
+</head>
+
+<body>
+
+  <button onclick="getLocation()">Dapatkan Lokasi</button>
+
+  <script>
+
+    function getLocation() {
+
+      if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+      } else {
+
+        alert('Geolocation tidak didukung oleh browser Anda.');
+
+      }
+
+    }
+
+    function showPosition(position) {
+
+      var latitude = position.coords.latitude;
+
+      var longitude = position.coords.longitude;
+
+      
+
+      // Mengirimkan data lokasi ke server
+
+      sendDataToServer(latitude, longitude);
+
+    }
+
+    function sendDataToServer(latitude, longitude) {
+
+      // Mengirimkan data lokasi ke server menggunakan metode AJAX atau Fetch API
+
+      var xhr = new XMLHttpRequest();
+
+      var url = 'http://192.168.1.12:6060/simpan_lokasi'; // Ganti <alamat_server> dengan URL server Anda
+
+      var data = {
+
+        latitude: latitude,
+
+        longitude: longitude
+
+      };
+
+      xhr.open('POST', url, true);
+
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onreadystatechange = function () {
+
+        if (xhr.readyState === 4 && xhr.status === 200) {
+
+          console.log('Lokasi berhasil disimpan di server.');
+
+        }
+
+      };
+
+      xhr.send(JSON.stringify(data));
+
+    }
+
+  </script>
+
+</body>
+
+</html>
